@@ -21,7 +21,7 @@ LegInverseDynamic(16,56,90,120,120,90,32)
     rw = 0.03;  % radius of the wheel (m)
     h = 0.03;   % height of the body (m)
     w = 0.112;   % width of the body (m)
-    l = 0.056;   % length of the link (m)
+    l = 0.106;   % length of the link (m)
     g = 9.81;  % gravitational acceleration (m/s²)
     
     % Calculate moments of inertia
