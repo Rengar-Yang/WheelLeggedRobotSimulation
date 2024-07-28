@@ -1,7 +1,5 @@
-function Torque = LQRcontroller(State,K1,K2,K3,TargetSpeed,X)
-
-    K_LQR = [K1,K2,K3];
-
+function Torque = LQRcontroller(State,K_LQR,TargetSpeed,X)
+    
     % Desired state
     X_des = [0;0;TargetSpeed];
 

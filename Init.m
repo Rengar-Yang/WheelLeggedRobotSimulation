@@ -15,6 +15,7 @@ LegInverseDynamic(16,56,90,120,120,90,32)
 %% LQR controller
     clc;
     clear all;
+    
     % Example parameters
     mb = 0.5;  % mass of the float-based body (kg)
     mw = 0.15;  % mass of the wheel (kg)
@@ -30,14 +31,29 @@ LegInverseDynamic(16,56,90,120,120,90,32)
     
     % Compute matrices
     [A, B] = StateSpaceMatrix(mb, mw, Ib, Iw, rw, l, g);
-    
+    tA = 0.1 * [0:29]';
+    Simulation_A = repmat(A,[1 1 length(tA)]);
+    dataA.time=tA;
+    dataA.signals.values = Simulation_A;
+    dataA.signals.dimensions=[3 3];
+
+    tB = 0.1 * [0:29]';
+    Simulation_B = repmat(B,[1 1 length(tB)]);
+    dataB.time=tB;
+    dataB.signals.values = Simulation_B;
+    dataB.signals.dimensions=[3 1];
+
     % Define weight matrices Q and R for LQR
     Q = diag([100, 1, 1]); % Adjust as needed
     R = 1000000; % Adjust as needed
     
     % Calculate LQR gain matrix K
     K_LQR= lqr(A, B, Q, R); 
-    K_LQR = [0,K_LQR];
+    tK_LQR = 0.1 * [0:29]';
+    Simulation_K_LQR = repmat(K_LQR,[1 1 length(tK_LQR)]);
+    dataK_LQR.time=tK_LQR;
+    dataK_LQR.signals.values = Simulation_K_LQR;
+    dataK_LQR.signals.dimensions=[size(K_LQR, 1) size(K_LQR, 2)];
 
   %% MPC controller, state space get
         clc;
