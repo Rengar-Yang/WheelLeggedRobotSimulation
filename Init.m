@@ -99,7 +99,7 @@ LegInverseDynamic(16,56,90,120,120,90,32)
         [G,H]=c2d(eval(A),eval(B),0.005);
         
         % 定义权重矩阵Q, R
-        Q=diag([1 1 500 100 5000 1]);
+        Q=diag([10 10 500 100 5000 1]);
         R=diag([1 0.25]);
     
         % 求解反馈矩阵K
@@ -124,6 +124,29 @@ LegInverseDynamic(16,56,90,120,120,90,32)
     % 输出到m函数
     matlabFunction(K,'File','LQR_VMC');
 
+%% 离地检测
+
+    clc;
+    clear all;
+    % 定义符号变量
+    syms F_N F Tp theta L0 L0_ddot L0_dot z_M real
+    syms dtheta ddtheta ddz_M real
+    mw=0.15; 
+    g=9.8;
+    % 定义 P 和 z_w 的表达式
+    P = F * cos(theta) + (Tp * sin(theta)) / L0;
+    
+    % 定义 z_w 的二阶导数
+    ddz_w = ddz_M - L0_ddot * cos(theta) + 2 * L0_dot * dtheta * sin(theta) + L0 * ddtheta * sin(theta) + L0 * dtheta^2 * cos(theta);
+
+    % 定义力平衡方程并解 F_N
+    F_N = mw * ddz_w + P + mw * g;
+    
+    % 显示结果
+    matlabFunction(F_N,'File','SupportDetection');
+    disp('F_N 的解为:');
+    disp(F_N);
+
 
 %% LQR controller
     clc;
@@ -135,7 +158,7 @@ LegInverseDynamic(16,56,90,120,120,90,32)
     rw = 0.03;  % radius of the wheel (m)
     h = 0.03;   % height of the body (m)
     w = 0.112;   % width of the body (m)
-    l = 0.106;   % length of the link (m)
+    l = 0.05+0.056;   % length of the link (m)
     g = 9.81;  % gravitational acceleration (m/s²)
     
     % Calculate moments of inertia
@@ -202,8 +225,8 @@ LegInverseDynamic(16,56,90,120,120,90,32)
         dataB.signals.dimensions=[3 1];
 
         %% Compute the offline matrix
-        % State = [0;0;0];
-        % U = 0;
+        State = [0;0;0];
+        U = 0;
 
         N = 20;% Prediction length
         StateNum = 3; % The number of the state
@@ -305,14 +328,14 @@ LegInverseDynamic(16,56,90,120,120,90,32)
        % % ================================Observer==============================
        %  NextState = State + (A*State + B*U)*0.001;
 
-        % % =======================Calculate H and f matrix=======================
-        % E=[U_weight*U; zeros((N-1)*InputNum, 1)];    
-        % H = Phi'*Q*Phi + S_Matrix;
-        % H = (H+H')/2;
-        % f = Phi'*Q*(Lambda*NextState - R) - E;
-        % options = optimoptions('quadprog', 'Algorithm', 'active-set', 'Display', 'off');
-        % Torque = quadprog(H, f, [], [], [], [], [], [], zeros(size(f)),options);
-        % % Torque = Torque(1);
+        % =======================Calculate H and f matrix=======================
+        E=[U_weight*U; zeros((N-1)*InputNum, 1)];    
+        H = Phi'*Q*Phi + S_Matrix;
+        H = (H+H')/2;
+        f = Phi'*Q*(Lambda*State - R) - E;
+        options = optimoptions('quadprog', 'Algorithm', 'active-set', 'Display', 'off');
+        Torque = quadprog(H, f, [], [], [], [], [], [], zeros(size(f)),options);
+        % Torque = Torque(1);
     
         %%
         MPCcontroller([1;0.1;0.2],0,A,B,U_weight,0,Phi,Lambda,InputNum,N,Q,S_Matrix,0,StateNum)
