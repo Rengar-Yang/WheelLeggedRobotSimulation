@@ -225,8 +225,8 @@ LegInverseDynamic(16,56,90,120,120,90,32)
         dataB.signals.dimensions=[3 1];
 
         %% Compute the offline matrix
-        State = [0;0;0];
-        U = 0;
+        % State = [0;0;0];
+        % U = 0;
 
         N = 20;% Prediction length
         StateNum = 3; % The number of the state
@@ -328,14 +328,14 @@ LegInverseDynamic(16,56,90,120,120,90,32)
        % % ================================Observer==============================
        %  NextState = State + (A*State + B*U)*0.001;
 
-        % =======================Calculate H and f matrix=======================
-        E=[U_weight*U; zeros((N-1)*InputNum, 1)];    
-        H = Phi'*Q*Phi + S_Matrix;
-        H = (H+H')/2;
-        f = Phi'*Q*(Lambda*State - R) - E;
-        options = optimoptions('quadprog', 'Algorithm', 'active-set', 'Display', 'off');
-        Torque = quadprog(H, f, [], [], [], [], [], [], zeros(size(f)),options);
-        % Torque = Torque(1);
+        % % =======================Calculate H and f matrix=======================
+        % E=[U_weight*U; zeros((N-1)*InputNum, 1)];    
+        % H = Phi'*Q*Phi + S_Matrix;
+        % H = (H+H')/2;
+        % f = Phi'*Q*(Lambda*State - R) - E;
+        % options = optimoptions('quadprog', 'Algorithm', 'active-set', 'Display', 'off');
+        % Torque = quadprog(H, f, [], [], [], [], [], [], zeros(size(f)),options);
+        % % Torque = Torque(1);
     
         %%
         MPCcontroller([1;0.1;0.2],0,A,B,U_weight,0,Phi,Lambda,InputNum,N,Q,S_Matrix,0,StateNum)
