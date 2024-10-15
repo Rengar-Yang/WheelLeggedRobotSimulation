@@ -50,6 +50,7 @@ LegInverseDynamic(16,56,90,120,120,90,32)
     matlabFunction(T, 'File', 'JointVMC', 'Vars', {F,Tp,phi1, phi4, l1, l2, l3, l4, l5});
 
 %% LQR controller with VMC
+% 运行LQR with VMC模块之前请运行此代码块
     clc;
     clear all;
     
@@ -125,7 +126,7 @@ LegInverseDynamic(16,56,90,120,120,90,32)
     matlabFunction(K,'File','LQR_VMC');
 
 %% 离地检测
-
+% 目前还未成功
     clc;
     clear all;
     % 定义符号变量
@@ -149,6 +150,7 @@ LegInverseDynamic(16,56,90,120,120,90,32)
 
 
 %% LQR controller
+%运行LQR with MRAC之前请运行此代码块
     clc;
     clear all;
     
@@ -192,6 +194,7 @@ LegInverseDynamic(16,56,90,120,120,90,32)
     dataK_LQR.signals.dimensions=[size(K_LQR, 1) size(K_LQR, 2)];
 
   %% MPC controller, state space get
+  % 运行MPC模块之前请运行此代码块和下一个代码块
         clc;
         clear all;
         % Example parameters
@@ -225,8 +228,7 @@ LegInverseDynamic(16,56,90,120,120,90,32)
         dataB.signals.dimensions=[3 1];
 
         %% Compute the offline matrix
-        % State = [0;0;0];
-        % U = 0;
+        %更改MPC控制器的参数后请重新运行此代码块，重新计算离线矩阵
 
         N = 20;% Prediction length
         StateNum = 3; % The number of the state
@@ -336,7 +338,4 @@ LegInverseDynamic(16,56,90,120,120,90,32)
         % options = optimoptions('quadprog', 'Algorithm', 'active-set', 'Display', 'off');
         % Torque = quadprog(H, f, [], [], [], [], [], [], zeros(size(f)),options);
         % % Torque = Torque(1);
-    
-        %%
-        MPCcontroller([1;0.1;0.2],0,A,B,U_weight,0,Phi,Lambda,InputNum,N,Q,S_Matrix,0,StateNum)
         
