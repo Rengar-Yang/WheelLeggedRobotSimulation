@@ -263,24 +263,7 @@ LegInverseDynamic(16,56,90,120,120,90,32)
         dataStateNum.signals.dimensions=[1 1];
        
         R = zeros(3*N,1); % Reference martrix [3N*1]
-        % % =============Calculate the reference matrix during the process============
-        % if k+N < size(Reference,1)
-        %     for i = 0:N-1
-        %          NowReference = [xr(k+i);yr(k+i);thetar(k+i)];
-        %          R((3*i)+1:(3*i+3),1) = NowReference;
-        %     end
-        % % ===============Calculate the reference matrix near the end=============
-        % else 
-        %     for i = 0:N-1
-        %         if k+i<size(my_alg('path'),1)
-        %             NowReference = [xr(k+i);yr(k+i);thetar(k+i)];
-        %         else
-        %             NowReference = [xr(size(my_alg('path'),1));yr(size(my_alg('path'),1));thetar(size(my_alg('path'),1))];
-        %         end
-        %          R((3*i)+1:(3*i+3),1) = NowReference;
-        %     end
-        % end
-
+        
         % =======================Initial parameters for H and f matrix============================
         Lambda = zeros(N*StateNum,StateNum);Lambda(1:StateNum,:)=A;
         Phi = zeros(N*StateNum, N*InputNum);
@@ -329,13 +312,4 @@ LegInverseDynamic(16,56,90,120,120,90,32)
 
        % % ================================Observer==============================
        %  NextState = State + (A*State + B*U)*0.001;
-
-        % % =======================Calculate H and f matrix=======================
-        % E=[U_weight*U; zeros((N-1)*InputNum, 1)];    
-        % H = Phi'*Q*Phi + S_Matrix;
-        % H = (H+H')/2;
-        % f = Phi'*Q*(Lambda*State - R) - E;
-        % options = optimoptions('quadprog', 'Algorithm', 'active-set', 'Display', 'off');
-        % Torque = quadprog(H, f, [], [], [], [], [], [], zeros(size(f)),options);
-        % % Torque = Torque(1);
         
