@@ -4,7 +4,7 @@
  代码中包含了PID，LQR和MPC三种控制方式，运动学控制和动力学控制两种控制模型。其中LQR控制器结合MRAC控制，实现了简单的自适应控制。
  由于作者水平和时间有限，代码可能会存在问题，如发现问题欢迎提出指正。
 
-使用教程：<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113332778500919&bvid=BV1k2CRYGEZr&cid=26360221166&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+使用教程：https://www.bilibili.com/video/BV1k2CRYGEZr/?spm_id_from=333.1387.homepage.video_card.click&vd_source=f4ad93a29b8670b5f266df2624afa3d2
 
  E-mail: zhenyiyang0614@163.com
  Wechat: yzy1090912934
